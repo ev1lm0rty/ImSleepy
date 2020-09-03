@@ -1,4 +1,3 @@
-import re
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -8,17 +7,15 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 def getList(soup):
     num = 1
-    #courses = soup.find_all('a' , href = True)
     A = list()
     for i in soup.find_all('a' , href=True):
-        # Regex module
         if i['href'].find('type=Course') != -1:
             A.append(i['href'])
-            print(num , end = ' ')
-            print(": " + i.text)
+            print(f"[{num}]",end = ' ')
+            print(i.text)
             print("-"* 30)
             num = num + 1    
-    choice = input("\nSelect your course\n> ")
+    choice = input("\n[*] Select your course:\n[>] ")
     url = A[int(choice)-1]
     a = url.find("&id=")
     b = url.find("&u")
@@ -26,32 +23,23 @@ def getList(soup):
     return url[a:b]
 
 def final(driver , course_id):
-
+    print("[*] Opening Collaborate")
     collab = f"https://learn.upes.ac.in/webapps/blackboard/content/launchLink.jsp?course_id={course_id}&tool_id=_2221_1&tool_type=TOOL&mode=view&mode=reset"
-    print(collab)
     driver.get(collab)
     time.sleep(20)
-    driver.save_screenshot("GotToCollab.png")
+    driver.save_screenshot("Done_Collaborate.png")
+    print("[+] Done")
+    print("[*] Joining Session")
+    ed = ActionChains(driver)
+    element = driver.find_element_by_xpath('/html/body/div[4]/table/tbody/tr/td/div/div[1]/a')
+    ed.move_to_element(element).move_by_offset(9, 186).click().perform()
+    time.sleep(5)
+    driver.save_screenshot("Done_Click1.png")
+    ed = ActionChains(driver)
+    ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+    time.sleep(3600)
+    print("[*] Done")
 
-    #bleh = driver.page_source
-    #soup = BeautifulSoup(driver.page_source , features="lxml")
-    # for i in soup.find_all('button'):
-    #     if i.get('id') is not None and 'session' in i.get('id'):
-    #         print(i.get('id'))
-    # Find the button id using regex = button
-    # element = driver.find_element_by_id(button)
-    # element.click()
-    # time.sleep(10)
-    # element = drvier.find_element_by_name("Join Course Room")
-    # element.click()
-    #element = driver.find_element_by_xpath('//*[@id="session-175412be3f264eebb13e320320542743"]')
-    #element = driver.find_element_by_name("Unlocked (available)")
-    element =driver.find_element_by_xpath("//button[contains(string(), 'Unlocked')]")
-    element.click()
-    time.sleep(10)
-    driver.save_screenshot("FUCKKKK.png")
-
-    
 def login(driver , username , password):
     url = f"https://{username}:{password}@learn.upes.ac.in/webapps/login"
     driver.get(url)
@@ -66,15 +54,14 @@ def login(driver , username , password):
     element.click()
     element = driver.find_element_by_id("agree_button")
     element.click()
-    driver.save_screenshot("login_successful.png")
+    driver.save_screenshot("Done_Login.png")
     print("[+] Done")
     time.sleep(5)
-    print("[*] Getting List of Courses")
+    print("[*] Getting List of Courses\n")
+    print("-"*30)
     soup = BeautifulSoup(driver.page_source ,features="lxml")
     course_id = getList(soup)
     final(driver , course_id)
-    print("[+] Done")    
-    print("....Byee....")
    
 def getCreds():
     f = open("creds.txt")
@@ -89,10 +76,14 @@ def main():
     username , password = getCreds()
     options = webdriver.FirefoxOptions()
     options.headless = True
-    driver = webdriver.Firefox(options = options)
+    #driver = webdriver.Firefox(options = options)
+    driver = webdriver.Firefox()
+    # driver.maximize_window()
+    # driver.minimize_window()
     print("[+] Done")
     print("[*] Logging In")
     login(driver , username , password)
+    print("[+] Bye Bye You Lazy Ass ;)")
     driver.close()
 
 main()
