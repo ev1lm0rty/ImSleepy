@@ -17,6 +17,7 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 This program was successfully tested on [Parrot GNU/Linux 4.10]
 
 ## Todos
-[*] Create a docker container for this program.
-[*] Automate it a bit further by attaching timetable.
-[*] Make this fully run in the background
+- [ ] Create a docker container for this program.
+- [ ] Make it fully run in the background.
+- [ ] Automate it a bit further by attaching timetable.
+- [ ] Make this fully run in the background
