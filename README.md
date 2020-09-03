@@ -8,12 +8,14 @@ Contribute to make it better.
 P.S If you are a faculty and somehow got this I'm sorry :p
 
 ## Setup
-1. Run the setup.sh file ```chmod +x setup.sh && sudo ./setup.sh```
+1. Run the setup.sh file ```chmod +x setup.sh && ./setup.sh```
 2. Enter your BlackBoard creds in the ```creds.txt``` file.
 3. Run the program ```python3 main.py```
 4. Enter the class you wanna attend and then sleep ;)
 
 ## Testing
+This program is still in it's beta dev. stage. 
+Will fix errors as soon as I find them
 This program was successfully tested on [Parrot GNU/Linux 4.10]
 
 ## Todos
