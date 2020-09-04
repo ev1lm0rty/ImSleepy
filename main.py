@@ -1,11 +1,33 @@
+import os
+from os import path
+from datetime import datetime
+import sys
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
+def screenshot(driver , message):
+    if not path.exists("Sceenshots"):
+        os.mkdir("Sceenshots")
+    now = datetime.now()
+    filename = now + "--" + message + ".png"
+    driver.save_screenshot(filename)
 
-def getList(soup):
+# Works
+def banner():
+    print("="*50)
+    f = open("banner.txt")
+    print(f.read())
+    f.close()
+    print("MadeBy: Shubham Arya (ev1l._.m0rty)")
+    print("Contribute: https://github.com/mrjoker05/ImSleepy")
+    print("="*50)
+    print()
+
+# Works
+def getList(driver ,soup):
     num = 1
     A = list()
     for i in soup.find_all('a' , href=True):
@@ -13,33 +35,53 @@ def getList(soup):
             A.append(i['href'])
             print(f"[{num}]",end = ' ')
             print(i.text)
-            print("-"* 30)
+            # print("-"* 30)
             num = num + 1    
-    choice = input("\n[*] Select your course:\n[>] ")
+    print("[0] Exit")
+    print("="*50)
+    print()
+    choice = input("[*] Select your course:\n[>] ")
+    if choice == "0":
+        driver.close()
+        print("[*] Bye..!!!")
+        sys.exit()
     url = A[int(choice)-1]
     a = url.find("&id=")
     b = url.find("&u")
     a = a+4
     return url[a:b]
 
+# Works
 def final(driver , course_id):
     print("[*] Opening Collaborate")
     collab = f"https://learn.upes.ac.in/webapps/blackboard/content/launchLink.jsp?course_id={course_id}&tool_id=_2221_1&tool_type=TOOL&mode=view&mode=reset"
     driver.get(collab)
     time.sleep(20)
-    driver.save_screenshot("Done_Collaborate.png")
+    screenshot(driver , "Collaborate")
     print("[+] Done")
     print("[*] Joining Session")
     ed = ActionChains(driver)
+    # to be changed with key bindings
     element = driver.find_element_by_xpath('/html/body/div[4]/table/tbody/tr/td/div/div[1]/a')
     ed.move_to_element(element).move_by_offset(9, 186).click().perform()
     time.sleep(5)
-    driver.save_screenshot("Done_Click1.png")
     ed = ActionChains(driver)
     ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    time.sleep(3600)
+    time.sleep(5)
+    # Nasty stuff
+    driver.switch_to.window(driver.window_handles[1])
+    current_handle = driver.current_window_handle
+    collab_url = driver.current_url
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
+    driver.get(collab_url)
+    time.sleep(30)
+    screenshot(driver , "Session_Started")
     print("[*] Done")
-
+    print("[*] Session Running")
+    dynamic(driver)
+    
+# Works
 def login(driver , username , password):
     url = f"https://{username}:{password}@learn.upes.ac.in/webapps/login"
     driver.get(url)
@@ -54,15 +96,17 @@ def login(driver , username , password):
     element.click()
     element = driver.find_element_by_id("agree_button")
     element.click()
-    driver.save_screenshot("Done_Login.png")
+    screenshot(driver , "Login_Successful")
     print("[+] Done")
     time.sleep(5)
-    print("[*] Getting List of Courses\n")
-    print("-"*30)
+    print("[*] Getting List of Courses")
+    print("="*50)
+    print()
     soup = BeautifulSoup(driver.page_source ,features="lxml")
-    course_id = getList(soup)
+    course_id = getList(driver ,soup)
     final(driver , course_id)
    
+# Works
 def getCreds():
     f = open("creds.txt")
     creds = f.readlines()
@@ -71,19 +115,85 @@ def getCreds():
     f.close()
     return username , password
 
+# Works
+def dynamic(driver):
+    # Add the allow audio and video test
+    # Add the skip test
+    x = 1
+    while x:
+        print("="*50)
+        print()
+        print("[*] Dynamic Actions (For attendence)")
+        print("[1] Raise Hand")
+        print("[2] Write to Group")
+        print("[3] Set a timer")
+        print("[4] Close Session")
+        choice = input("[>] ")
+        print("="*50)
+        print()
+
+        if choice == "1":
+            raiseHand(driver)
+        elif choice == "2":
+            writeToGroup(driver)
+        elif choice == "3":
+            x = timer(driver)
+        elif choice == "4":
+            x = 0
+        else:
+            print("[!] Wrong Choice !!!")
+
+# Works
+def raiseHand(driver):
+    element = driver.find_element_by_id('raise-hand')
+    element.click()
+    screenshot(driver , "Hand_Raised")
+
+# Works
+def writeToGroup(driver):
+    print("[*] Enter your message")
+    message = input("[>] ")
+    element = driver.find_element_by_id('side-panel-open')
+    element.click()
+    time.sleep(3)
+    ed = ActionChains(driver)
+    ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+    time.sleep(2)
+    element = driver.find_element_by_id('message-input')
+    element.send_keys(message)
+    element.send_keys(Keys.RETURN)
+    screenshot(driver , "Message_Written")
+
+def timer(driver):
+    print("[!] You won't be able to perfom any actions now")
+    print("[*] Do you want to continue ?(y/n)")
+    choice = input("[>] ").lower()
+    if "y" in choice:
+        print("[*] Enter the time in minutes")
+        tt = input("[>] ")
+        time.sleep(tt * 60)
+        return 0
+    else:
+        return 1
+
+# Works
 def main():
+    banner()
     print("[*] Starting up")
     username , password = getCreds()
     options = webdriver.FirefoxOptions()
     options.headless = True
-    #driver = webdriver.Firefox(options = options)
-    driver = webdriver.Firefox()
-    # driver.maximize_window()
-    # driver.minimize_window()
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('default_content_setting_values.media_stream_mic', 1)
+    profile.set_preference('default_content_setting_values.media_stream_camera', 1)
+    profile.set_preference('headless',True)
+    # profile.update_preferences()
+    driver = webdriver.Firefox(profile)
     print("[+] Done")
     print("[*] Logging In")
     login(driver , username , password)
     print("[+] Bye Bye You Lazy Ass ;)")
     driver.close()
 
-main()
+if __name__ == "__main__":
+    main()
