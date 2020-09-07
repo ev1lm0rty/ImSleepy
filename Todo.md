@@ -6,9 +6,9 @@
 5. Visit the BBLink (Done)
 6. Open Collaborate Session (Done)
 7. Switch to tab (Done)
-8. Grant Permissions
-9. Start Session
-10. Leave it running for an hour
+8. Grant Permissions (Done)
+9. Start Session  (Done)
+10. Leave it running for an hour  (Done)
 
 
 # Stuff Left

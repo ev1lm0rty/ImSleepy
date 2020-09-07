@@ -1,30 +1,29 @@
 import os
-from os import path
-from datetime import datetime
 import sys
 import time
+from os import path
+from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
 
 
-
-# Works
 def screenshot(driver , message):
     if not path.exists("Screenshots"):
         os.mkdir("Screenshots")
     now = datetime.now()
-    filename = str(now) + "--" + message + ".png"
+    filename = str(now) + "_" + message + ".png"
     driver.save_screenshot("./Screenshots/" + filename)
 
-# Works
 def banner():
     print("="*50)
-    f = open("banner.txt")
+    f = open("Banner.txt")
     print(f.read())
     f.close()
     print("MadeBy: Shubham Arya (ev1l._.m0rty)")
@@ -32,7 +31,6 @@ def banner():
     print("="*50)
     print()
 
-# Works
 def getList(driver ,soup):
     num = 1
     A = list()
@@ -41,7 +39,6 @@ def getList(driver ,soup):
             A.append(i['href'])
             print(f"[{num}]",end = ' ')
             print(i.text)
-            # print("-"* 30)
             num = num + 1    
     print("[0] Exit")
     print("="*50)
@@ -57,7 +54,6 @@ def getList(driver ,soup):
     a = a+4
     return url[a:b]
 
-# Works
 def final(driver , course_id):
     print("[*] Opening Collaborate")
     collab = f"https://learn.upes.ac.in/webapps/blackboard/content/launchLink.jsp?course_id={course_id}&tool_id=_2221_1&tool_type=TOOL&mode=view&mode=reset"
@@ -67,14 +63,12 @@ def final(driver , course_id):
     print("[+] Done")
     print("[*] Joining Session")
     ed = ActionChains(driver)
-    # to be changed with key bindings
     element = driver.find_element_by_xpath('/html/body/div[4]/table/tbody/tr/td/div/div[1]/a')
     ed.move_to_element(element).move_by_offset(9, 186).click().perform()
     time.sleep(5)
     ed = ActionChains(driver)
     ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
     time.sleep(5)
-    # Nasty stuff
     driver.switch_to.window(driver.window_handles[1])
     current_handle = driver.current_window_handle
     collab_url = driver.current_url
@@ -86,8 +80,7 @@ def final(driver , course_id):
     print("[*] Done")
     print("[*] Session Running")
     dynamic(driver)
-    
-# Works
+
 def login(driver , username , password):
     url = f"https://{username}:{password}@learn.upes.ac.in/webapps/login"
     driver.get(url)
@@ -113,29 +106,33 @@ def login(driver , username , password):
     course_id = getList(driver ,soup)
     final(driver , course_id)
    
-# Works
 def getCreds():
-    f = open("creds.txt")
+    f = open("Creds.txt")
     creds = f.readlines()
     username = creds[0].strip()
     password = creds[1].strip()
     f.close()
     return username , password
 
-# Works
 def dynamic(driver):
-
-    # Audio Test
-    # acceptAlert(driver)
-    # tab-tab-enter
-    
-    # Video Test
-    # acceptAlert(driver)
-    # techcheck-video-ok-button.click()
-    # tab-tab-enter
-    # tab-enter
-    
     x = 1
+    try:
+        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, 'dialog-title-audio')))
+        ed = ActionChains(driver)
+        time.sleep(5)
+        ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+    
+    except TimeoutException:
+        print("[*] Some Error Occured")
+        x = 0
+    x = clickTest(driver , 'techcheck-video-ok-button')
+    ed = ActionChains(driver)
+    time.sleep(5)
+    ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+    ed = ActionChains(driver)
+    ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+    # ed.key_down(Keys.RETURN).perfom()
+    screenshot(driver , "Final_Screenshot")
     while x:
         print("="*50)
         print()
@@ -147,7 +144,6 @@ def dynamic(driver):
         choice = input("[>] ")
         print("="*50)
         print()
-
         if choice == "1":
             raiseHand(driver)
         elif choice == "2":
@@ -159,23 +155,22 @@ def dynamic(driver):
         else:
             print("[!] Wrong Choice !!!")
 
-def acceptAlert(driver):
+def clickTest(driver  , id):
     try:
-        WebDriverWait(driver, 120).until(EC.alert_is_present(),'Timed out waiting for PA creation ' +'confirmation popup to appear.')
-        alert = driver.switch_to.alert
-        alert.accept()
-        print("alert accepted")
-    
+        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, id)))
+        element = driver.find_element_by_id(id)
+        element.click()
     except TimeoutException:
-        print("Some Error Occured")
+        print("[*] Some Error Occured")
+        return 0
+    return 1
 
-# Works
+
 def raiseHand(driver):
     element = driver.find_element_by_id('raise-hand')
     element.click()
     screenshot(driver , "Hand_Raised")
 
-# Works
 def writeToGroup(driver):
     print("[*] Enter your message")
     message = input("[>] ")
@@ -190,7 +185,6 @@ def writeToGroup(driver):
     element.send_keys(Keys.RETURN)
     screenshot(driver , "Message_Written")
 
-# Works
 def timer(driver):
     print("[!] You won't be able to perfom any actions now")
     print("[*] Do you want to continue ?(y/n)")
@@ -198,29 +192,29 @@ def timer(driver):
     if "y" in choice:
         print("[*] Enter the time in minutes")
         tt = input("[>] ")
-        time.sleep(tt * 60)
+        print(f"[*] Will close session in {tt} minutes.")
+        time.sleep(int(tt) * 60)
         return 0
     else:
         return 1
 
-# Works
 def main():
     banner()
     print("[*] Starting up")
     username , password = getCreds()
-    options = webdriver.FirefoxOptions()
-    options.headless = True
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference('default_content_setting_values.media_stream_mic', 1)
-    profile.set_preference('default_content_setting_values.media_stream_camera', 1)
-    profile.update_preferences()
-    # profile.set_preference('headless',True)
-    # profile.update_preferences()
-    # profile.set_preference("prefs", { \
-    # "profile.default_content_setting_values.media_stream_mic": 1,           
-    # "profile.default_content_setting_values.media_stream_camera": 1,
-    # })
-    driver = webdriver.Firefox()
+    user_agent = '--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.1750.517 Safari/537.36"'
+    opt = Options()
+    opt.add_argument(user_agent)
+    # opt.add_argument("--headless")
+    opt.add_argument("--disable-infobars")
+    opt.add_argument("start-maximized")
+    opt.add_argument("--disable-extensions")
+    # Pass the argument 1 to allow and 2 to block
+    opt.add_experimental_option("prefs", { \
+    "profile.default_content_setting_values.media_stream_mic": 1, 
+    "profile.default_content_setting_values.media_stream_camera": 1,
+    })
+    driver = webdriver.Chrome(options=opt)
     print("[+] Done")
     print("[*] Logging In")
     login(driver , username , password)
