@@ -25,8 +25,8 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 3. Raise hand, Writing to group chat 
 
 ## Testing
-```
 A huge thanks to my friend [Aaryash](https://github.com/DirtyVibe) for helping me in testing this.
+```
 This program is still in it's beta dev. stage. 
 Will fix errors as soon as I find them
 This program was successfully tested on [Parrot GNU/Linux 4.10]
