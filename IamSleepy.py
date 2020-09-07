@@ -2,6 +2,7 @@ import os
 import sys
 import time
 from os import path
+from sys import argv
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -211,7 +212,10 @@ def main():
     user_agent = '--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.1750.517 Safari/537.36"'
     opt = Options()
     opt.add_argument(user_agent)
-    # opt.add_argument("--headless")
+
+    if len(argv) > 1 and "bg" in argv[1]:
+        opt.add_argument("--headless")
+
     opt.add_argument("--disable-infobars")
     opt.add_argument("start-maximized")
     opt.add_argument("--disable-extensions")

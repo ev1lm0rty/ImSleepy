@@ -16,8 +16,11 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 ## Setup
 1. Run the Setup.sh file ```chmod +x Setup.sh && ./Setup.sh```
 2. Enter your BlackBoard creds in the ```Creds.txt``` file.
-3. Run the program ```python3 IamSleepy.py```
-4. Enter the class you wanna attend and then sleep ;)
+
+## Usage
+1. Run ```python3 IamSleepy.py``` to start the program and browser in foreground.
+2. Or Run  ```python3 IamSleepy.py bg``` to start the program in the background.
+3. Enter the class you wanna attend and then sleep ;)
 
 ## Features
 1. Can run fully in background
