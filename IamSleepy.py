@@ -12,7 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-
+# This took some real hardwork so I would love if you people will make some 
+# 'meaningful' contributions to this. Thanks
 
 def screenshot(driver , message):
     if not path.exists("Screenshots"):
@@ -93,9 +94,14 @@ def login(driver , username , password):
     element.send_keys(password)
     element = driver.find_element_by_id("entry-login")
     element.click()
-    time.sleep(5)
-    element = driver.find_element_by_id("agree_button")
-    element.click()
+    # Check 
+    try:
+        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, "agree_button")))
+        element = driver.find_element_by_id("agree_button")
+        element.click()
+    except TimeoutException:
+        print("[*] Some Error Occured (Slow Internet ?)")
+
     screenshot(driver , "Login_Successful")
     print("[+] Done")
     time.sleep(5)
@@ -117,7 +123,7 @@ def getCreds():
 def dynamic(driver):
     x = 1
     try:
-        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, 'dialog-title-audio')))
+        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, 'techcheck-audio-mic-select')))
         ed = ActionChains(driver)
         time.sleep(5)
         ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
@@ -127,11 +133,12 @@ def dynamic(driver):
         x = 0
     x = clickTest(driver , 'techcheck-video-ok-button')
     ed = ActionChains(driver)
-    time.sleep(5)
+    time.sleep(10)
     ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
     ed = ActionChains(driver)
+    time.sleep(10)
     ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    # ed.key_down(Keys.RETURN).perfom()
+    # ed.key_down(Keys.RETURN).perform()
     screenshot(driver , "Final_Screenshot")
     while x:
         print("="*50)
@@ -164,7 +171,6 @@ def clickTest(driver  , id):
         print("[*] Some Error Occured")
         return 0
     return 1
-
 
 def raiseHand(driver):
     element = driver.find_element_by_id('raise-hand')
@@ -221,5 +227,4 @@ def main():
     print("[+] Bye Bye You Lazy Ass ;)")
     driver.close()
 
-if __name__ == "__main__":
-    main()
+main()
