@@ -1,12 +1,13 @@
 # ImSleepy
 
 ## About
+```
 This is a program I created just because I am lazy.
 It attends my online lectures for me ;)
 Star this repo if it helped you. 
 Contribute to make it better.
 P.S If you are a faculty and somehow got this I'm sorry :p
-
+```
 ## Requirements
 1. Linux (Debian)
 2. Fast Internet
@@ -24,11 +25,12 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 3. Raise hand, Writing to group chat 
 
 ## Testing
+```
 A huge thanks to my friend [Aaryash](https://github.com/DirtyVibe) for helping me in testing this.
 This program is still in it's beta dev. stage. 
 Will fix errors as soon as I find them
 This program was successfully tested on [Parrot GNU/Linux 4.10]
-
+```
 ## Todos
 - [x] Add minor error detection.
 - [ ] Create a docker container for this program.
