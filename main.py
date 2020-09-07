@@ -7,13 +7,19 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
+
+
+# Works
 def screenshot(driver , message):
-    if not path.exists("Sceenshots"):
-        os.mkdir("Sceenshots")
+    if not path.exists("Screenshots"):
+        os.mkdir("Screenshots")
     now = datetime.now()
-    filename = now + "--" + message + ".png"
-    driver.save_screenshot(filename)
+    filename = str(now) + "--" + message + ".png"
+    driver.save_screenshot("./Screenshots/" + filename)
 
 # Works
 def banner():
@@ -94,6 +100,7 @@ def login(driver , username , password):
     element.send_keys(password)
     element = driver.find_element_by_id("entry-login")
     element.click()
+    time.sleep(5)
     element = driver.find_element_by_id("agree_button")
     element.click()
     screenshot(driver , "Login_Successful")
@@ -117,8 +124,17 @@ def getCreds():
 
 # Works
 def dynamic(driver):
-    # Add the allow audio and video test
-    # Add the skip test
+
+    # Audio Test
+    # acceptAlert(driver)
+    # tab-tab-enter
+    
+    # Video Test
+    # acceptAlert(driver)
+    # techcheck-video-ok-button.click()
+    # tab-tab-enter
+    # tab-enter
+    
     x = 1
     while x:
         print("="*50)
@@ -143,6 +159,16 @@ def dynamic(driver):
         else:
             print("[!] Wrong Choice !!!")
 
+def acceptAlert(driver):
+    try:
+        WebDriverWait(driver, 120).until(EC.alert_is_present(),'Timed out waiting for PA creation ' +'confirmation popup to appear.')
+        alert = driver.switch_to.alert
+        alert.accept()
+        print("alert accepted")
+    
+    except TimeoutException:
+        print("Some Error Occured")
+
 # Works
 def raiseHand(driver):
     element = driver.find_element_by_id('raise-hand')
@@ -164,6 +190,7 @@ def writeToGroup(driver):
     element.send_keys(Keys.RETURN)
     screenshot(driver , "Message_Written")
 
+# Works
 def timer(driver):
     print("[!] You won't be able to perfom any actions now")
     print("[*] Do you want to continue ?(y/n)")
@@ -186,9 +213,14 @@ def main():
     profile = webdriver.FirefoxProfile()
     profile.set_preference('default_content_setting_values.media_stream_mic', 1)
     profile.set_preference('default_content_setting_values.media_stream_camera', 1)
-    profile.set_preference('headless',True)
+    profile.update_preferences()
+    # profile.set_preference('headless',True)
     # profile.update_preferences()
-    driver = webdriver.Firefox(profile)
+    # profile.set_preference("prefs", { \
+    # "profile.default_content_setting_values.media_stream_mic": 1,           
+    # "profile.default_content_setting_values.media_stream_camera": 1,
+    # })
+    driver = webdriver.Firefox()
     print("[+] Done")
     print("[*] Logging In")
     login(driver , username , password)
