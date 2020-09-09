@@ -33,10 +33,16 @@ A huge thanks to my friend [Aaryash](https://github.com/DirtyVibe) for helping m
 ```
 This program is still in it's beta dev. stage. 
 Will fix errors as soon as I find them
-This program was successfully tested on [Parrot GNU/Linux 4.10]
+This program was successfully tested on [Parrot GNU/Linux 4.10] [Ubuntu 18.04] [Kali 2020.3]
 ```
 ## Todos
 - [x] Add minor error detection.
 - [ ] Create a docker container for this program.
 - [x] Make it fully run in the background.
 - [ ] Automate it a bit further by attaching timetable.
+
+
+## Images
+
+![Image-01](https://github.com/mrjoker05/ImSleepy/blob/master/image1.png?raw=true)
+![Image-02](https://github.com/mrjoker05/ImSleepy/blob/master/image2.png?raw=true)
