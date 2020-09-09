@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Get Creds
+read -p 'Enter Username: ' uservar
+read -p 'Password: ' passvar
+
+echo $uservar > Creds.txt
+echo $passvar >> Creds.txt
+
 # For setting up
 sudo apt update
 sudo apt install python3-pip wget -y

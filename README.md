@@ -15,7 +15,7 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 
 ## Setup
 1. Run the Setup.sh file ```chmod +x Setup.sh && ./Setup.sh```
-2. Enter your BlackBoard creds in the ```Creds.txt``` file.
+2. You can modify  your BlackBoard creds in the ```Creds.txt``` file.
 
 ## Usage
 1. Run ```python3 IamSleepy.py``` to start the program and browser in foreground.
@@ -26,6 +26,7 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 1. Can run fully in background
 2. Set a timer to automatically close session
 3. Raise hand, Writing to group chat 
+4. Takes screenshots of session ( to prove that it's actually running )
 
 ## Testing
 A huge thanks to my friend [Aaryash](https://github.com/DirtyVibe) for helping me in testing this.

@@ -34,6 +34,7 @@ def banner():
     print()
 
 def getList(driver ,soup):
+    driver.minimize_window()
     num = 1
     A = list()
     for i in soup.find_all('a' , href=True):
@@ -54,6 +55,7 @@ def getList(driver ,soup):
     a = url.find("&id=")
     b = url.find("&u")
     a = a+4
+    driver.maximize_window()
     return url[a:b]
 
 def final(driver , course_id):
