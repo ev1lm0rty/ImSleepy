@@ -131,23 +131,22 @@ def getCreds():
 def dynamic(driver):
     x = 1
     try:
-        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, 'techcheck-audio-mic-select')))
+        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, 'techcheck-audio-mic-select')))
         ed = ActionChains(driver)
         time.sleep(5)
         ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    
+        x = clickTest(driver , 'techcheck-video-ok-button')
+        ed = ActionChains(driver)
+        time.sleep(10)
+        ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
+        ed = ActionChains(driver)
+        time.sleep(10)
+        ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()   
+        screenshot(driver , "Final_Screenshot")
     except TimeoutException:
         print("[!] Some Error Occured")
         x = 0
-    x = clickTest(driver , 'techcheck-video-ok-button')
-    ed = ActionChains(driver)
-    time.sleep(10)
-    ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    ed = ActionChains(driver)
-    time.sleep(10)
-    ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    # ed.key_down(Keys.RETURN).perform()
-    screenshot(driver , "Final_Screenshot")
+    
     print("[*] Session Running")
     if len(argv) == 4:
         print(f"[*] Session will close in {argv[3]} seconds")
@@ -180,9 +179,9 @@ def dynamic(driver):
         else:
             print("[!] Wrong Choice !!!")
 
-def clickTest(driver  , id):
+def clickTest(driver , id):
     try:
-        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, id)))
+        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, id)))
         element = driver.find_element_by_id(id)
         element.click()
     except TimeoutException:
