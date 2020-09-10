@@ -25,7 +25,7 @@ def screenshot(driver , message):
 
 def banner():
     print("="*50)
-    f = open("Banner.txt")
+    f = open("Files/Banner.txt")
     print(f.read())
     f.close()
     print("MadeBy: Shubham Arya (ev1l._.m0rty)")
@@ -37,16 +37,23 @@ def getList(driver ,soup):
     driver.minimize_window()
     num = 1
     A = list()
+    f = open("Files/CourseList.md" , "w+")
     for i in soup.find_all('a' , href=True):
         if i['href'].find('type=Course') != -1:
             A.append(i['href'])
             print(f"[{num}]",end = ' ')
             print(i.text)
+            f.write(f"[{num}] {i.text}")
+            f.write("\n")
             num = num + 1    
     print("[0] Exit")
     print("="*50)
+    f.close()
     print()
-    choice = input("[*] Select your course:\n[>] ")
+    if len(argv) >= 2:
+        choice = argv[2]
+    else:
+        choice = input("[*] Select your course:\n[>] ")
     if choice == "0":
         driver.close()
         print("[*] Bye..!!!")
@@ -80,7 +87,7 @@ def final(driver , course_id):
     driver.switch_to.window(driver.window_handles[0])
     driver.get(collab_url)
     print("[*] Done")
-    print("[*] Session Running")
+    print("[*] Starting Session")
     dynamic(driver)
 
 def login(driver , username , password):
@@ -114,7 +121,7 @@ def login(driver , username , password):
     final(driver , course_id)
    
 def getCreds():
-    f = open("Creds.txt")
+    f = open("Files/Creds.txt")
     creds = f.readlines()
     username = creds[0].strip()
     password = creds[1].strip()
@@ -130,7 +137,7 @@ def dynamic(driver):
         ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
     
     except TimeoutException:
-        print("[*] Some Error Occured")
+        print("[!] Some Error Occured")
         x = 0
     x = clickTest(driver , 'techcheck-video-ok-button')
     ed = ActionChains(driver)
@@ -141,6 +148,13 @@ def dynamic(driver):
     ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()
     # ed.key_down(Keys.RETURN).perform()
     screenshot(driver , "Final_Screenshot")
+    print("[*] Session Running")
+    if len(argv) == 3:
+        print(f"[*] Session will close in {argv[3]} seconds")
+        t = int(argv[3])
+        time.sleep(t*60)
+        x = 0
+    
     while x:
         print("="*50)
         print()

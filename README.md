@@ -27,6 +27,7 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 2. Set a timer to automatically close session
 3. Raise hand, Writing to group chat 
 4. Takes screenshots of session ( to prove that it's actually running )
+5. [Add Time Table](https://github.com/mrjoker05/ImSleepy/blob/master/Files/Lazier.md)
 
 ## Testing
 A huge thanks to my friend [Aaryash](https://github.com/DirtyVibe) for helping me in testing this.
@@ -39,10 +40,10 @@ This program was successfully tested on [Parrot GNU/Linux 4.10] [Ubuntu 18.04] [
 - [x] Add minor error detection.
 - [ ] Create a docker container for this program.
 - [x] Make it fully run in the background.
-- [ ] Automate it a bit further by attaching timetable.
+- [x] Automate it a bit further by attaching timetable.
 
 
 ## Images
 
-![Image-01](https://github.com/mrjoker05/ImSleepy/blob/master/image1.png?raw=true)
-![Image-02](https://github.com/mrjoker05/ImSleepy/blob/master/image2.png?raw=true)
+![Image-01](https://github.com/mrjoker05/ImSleepy/blob/master/Files/image1.png?raw=true)
+![Image-02](https://github.com/mrjoker05/ImSleepy/blob/master/Files/image2.png?raw=true)
