@@ -50,7 +50,7 @@ def getList(driver ,soup):
     print("="*50)
     f.close()
     print()
-    if len(argv) >= 2:
+    if len(argv) >= 3:
         choice = argv[2]
     else:
         choice = input("[*] Select your course:\n[>] ")
@@ -149,7 +149,7 @@ def dynamic(driver):
     # ed.key_down(Keys.RETURN).perform()
     screenshot(driver , "Final_Screenshot")
     print("[*] Session Running")
-    if len(argv) == 3:
+    if len(argv) == 4:
         print(f"[*] Session will close in {argv[3]} seconds")
         t = int(argv[3])
         time.sleep(t*60)
