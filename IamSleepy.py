@@ -148,7 +148,8 @@ def dynamic(driver):
         print("[1] Raise Hand")
         print("[2] Write to Group")
         print("[3] Set a timer")
-        print("[4] Close Session")
+        print("[4] Take Screenshot")
+        print("[5] Close Session")
         choice = input("[>] ")
         print("="*50)
         print()
@@ -159,6 +160,8 @@ def dynamic(driver):
         elif choice == "3":
             x = timer(driver)
         elif choice == "4":
+            screenshot(driver , "Taken")
+        elif choice == "5":
             x = 0
         else:
             print("[!] Wrong Choice !!!")
