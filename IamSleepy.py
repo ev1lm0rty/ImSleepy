@@ -72,15 +72,13 @@ def final(driver , course_id):
     time.sleep(5)
     ed = ActionChains(driver)
     ed.key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.TAB).key_down(Keys.RETURN).perform()
-    time.sleep(5)
+    time.sleep(10)
     driver.switch_to.window(driver.window_handles[1])
     current_handle = driver.current_window_handle
     collab_url = driver.current_url
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
     driver.get(collab_url)
-    time.sleep(30)
-    screenshot(driver , "Session_Started")
     print("[*] Done")
     print("[*] Session Running")
     dynamic(driver)
