@@ -108,7 +108,10 @@ def login(driver , username , password):
         element = driver.find_element_by_id("agree_button")
         element.click()
     except TimeoutException:
-        print("[*] Some Error Occured (Slow Internet ?)")
+        print("[!] Some Error Occured (Slow Internet ?)")
+        print("[!] Exiting !!")
+        driver.close()
+        sys.exit()
 
     screenshot(driver , "Login_Successful")
     print("[+] Done")
@@ -144,12 +147,15 @@ def dynamic(driver):
         ed.key_down(Keys.TAB).key_down(Keys.RETURN).perform()   
         screenshot(driver , "Final_Screenshot")
     except TimeoutException:
-        print("[!] Some Error Occured")
+        print("[!] Some Error Occured ")
+        print("[!] Exiting !!")
+        driver.close()
         x = 0
+        sys.exit()
     
     print("[*] Session Running")
     if len(argv) == 4:
-        print(f"[*] Session will close in {argv[3]} seconds")
+        print(f"[*] Session will close automatically in {argv[3]} minutes")
         t = int(argv[3])
         time.sleep(t*60)
         x = 0
@@ -185,7 +191,10 @@ def clickTest(driver , id):
         element = driver.find_element_by_id(id)
         element.click()
     except TimeoutException:
-        print("[*] Some Error Occured")
+        print("[!] Some Error Occured")
+        print("[!] Exiting !!")
+        driver.close()
+        sys.exit()
         return 0
     return 1
 
