@@ -104,8 +104,7 @@ def login(driver , username , password):
     element.click()
     # Check 
     try:
-        WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.ID, "agree_button")))
-        element = driver.find_element_by_id("agree_button")
+        element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='agree_button']")))
         element.click()
     except TimeoutException:
         print("[!] Some Error Occured (Slow Internet ?)")
