@@ -18,14 +18,14 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 3. Python 3.x
 
 ## Setup
-1. Run the Setup.bat file 
+1. Run the ```Setup.bat``` file 
 2. You can modify  your BlackBoard creds in the ```Files/Creds.txt``` file.
 
 ## Usage
 1. Syntax ```python3 ImSleepy.py [bg] [Course Number] [Timer]```
 2. Run ```python3 IamSleepy.py``` or click ```StartHere.bat``` to start the program and browser in foreground.
 3. Or Run  ```python3 IamSleepy.py bg``` to start the program in the background.
-4. Enter the class you wanna attend and then sleep ;)
+4. Enter the class you wanna attend and then sleep ˵◡ ‿ ◡˵
 
 ## Features
 1. Can run fully in background
@@ -35,4 +35,11 @@ P.S If you are a faculty and somehow got this I'm sorry :p
 5. [Add Time Table](https://github.com/mrjoker05/ImSleepy/blob/master/Files/Lazier.md)
 
 ## Testing
-in progress :)
+A huge thanks to my friend [Anuj](https://github.com/Shinjiru-stack) for helping me in testing this.
+<br>
+This program is still in it's beta dev. stage. 
+<br>
+Will fix errors as soon as I find them
+<br>
+This program was successfully tested on [Parrot GNU/Linux 4.10] [Ubuntu 18.04] [Kali 2020.3]
+<br>
