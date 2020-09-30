@@ -14,8 +14,8 @@ def main():
 
 def setCron(ff):
     # Just to be safe
-    os.system("sudo cp /etc/crontab /etc/crontab.bak")
-    FILENAME = "/etc/crontab"
+    os.system("copy crontab crontab.bak")
+    FILENAME = "crontab"
     f = open(FILENAME , "a")
     for i in ff:
         day = i[0]
