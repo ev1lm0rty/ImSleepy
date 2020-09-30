@@ -48,7 +48,7 @@ This program was successfully tested on [Parrot GNU/Linux 4.10] [Ubuntu 18.04] [
 - [x] Add minor error detection.
 - [ ] Create a docker container for this program.
 - [x] Make it fully run in the background.
-- [x] Automate it a bit further by attaching timetable.
+- [x] Automate it a bit further by attaching timetable (A little buggy).
 
 
 ## Images
