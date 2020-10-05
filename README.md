@@ -1,7 +1,9 @@
 # ImSleepy
-<br>
+
+## Images
 ![ImSleepy](https://github.com/mrjoker05/ImSleepy/blob/master/Files/Image-01.png?raw=true)
-<br>
+
+
 ## About
 This is a program I created just because I am lazy.
 <br>
