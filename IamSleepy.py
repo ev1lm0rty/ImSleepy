@@ -1,8 +1,8 @@
 import os
 import sys
 import time
+import argparse
 from os import path
-from sys import argv
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -13,14 +13,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-# This took some real hardwork so I would love if you people will make some 
-# 'meaningful' contributions to this. Thanks
 
 def screenshot(driver , message):
     if not path.exists("Screenshots"):
         os.mkdir("Screenshots")
     now = datetime.now()
-    filename = str(now) + "_" + message + ".png"
+    filename = str(now.hour) + str(now.minute) + "_"  + message + ".png"
     driver.save_screenshot("./Screenshots/" + filename)
 
 def banner():
@@ -28,10 +26,7 @@ def banner():
     f = open("Files/Banner.txt")
     print(f.read())
     f.close()
-    print("MadeBy: Shubham Arya (ev1l._.m0rty)")
-    print("Contribute: https://github.com/mrjoker05/ImSleepy")
-    print("="*50)
-    print()
+    print("="*50 + "\n")
 
 def getList(driver ,soup):
     driver.minimize_window()
@@ -42,16 +37,16 @@ def getList(driver ,soup):
         if i['href'].find('type=Course') != -1:
             A.append(i['href'])
             print(f"[{num}]",end = ' ')
-            print(i.text)
-            f.write(f"[{num}] {i.text}")
+            print(i.text[:45])
+            f.write(f"[{num}] {i.text[:50]}")
             f.write("\n")
             num = num + 1    
     print("[0] Exit")
     print("="*50)
     f.close()
     print()
-    if len(argv) >= 3:
-        choice = argv[2]
+    if argsCourse:
+        choice = argsCourse
     else:
         choice = input("[*] Select your course:\n[>] ")
     if choice == "0":
@@ -69,7 +64,7 @@ def final(driver , course_id):
     print("[*] Opening Collaborate")
     collab = f"https://learn.upes.ac.in/webapps/blackboard/content/launchLink.jsp?course_id={course_id}&tool_id=_2221_1&tool_type=TOOL&mode=view&mode=reset"
     driver.get(collab)
-    time.sleep(20)
+    time.sleep(15)
     screenshot(driver , "Collaborate")
     print("[+] Done")
     print("[*] Joining Session")
@@ -86,8 +81,7 @@ def final(driver , course_id):
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
     driver.get(collab_url)
-    print("[*] Done")
-    print("[*] Starting Session")
+    print("[+] Done")
     dynamic(driver)
 
 def login(driver , username , password):
@@ -124,15 +118,28 @@ def login(driver , username , password):
     final(driver , course_id)
    
 def getCreds():
-    f = open("Files/Creds.txt")
-    creds = f.readlines()
-    username = creds[0].strip()
-    password = creds[1].strip()
-    f.close()
-    return username , password
+    if argsUser and argsPass:
+        f = open("Files/Creds.txt" , "w+")
+        f.write(argsUser)
+        f.write("\n")
+        f.write(argsPass)
+        f.close()
+        return argsUser , argsPass
+    else:
+        if not path.exists("Files/Creds.txt"):
+            print("[!] Creds File not present please enter creds manually")
+            sys.exit()
+        else:
+            f = open("Files/Creds.txt")
+            creds = f.readlines()
+            username = creds[0].strip()
+            password = creds[1].strip()
+            f.close()
+            return username , password
 
 def dynamic(driver):
     x = 1
+    print("[*] Trying to Start Session")
     try:
         WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, 'techcheck-audio-mic-select')))
         ed = ActionChains(driver)
@@ -154,9 +161,9 @@ def dynamic(driver):
         sys.exit()
     
     print("[*] Session Running")
-    if len(argv) == 4:
-        print(f"[*] Session will close automatically in {argv[3]} minutes")
-        t = int(argv[3])
+    if argsTimer:
+        print(f"[*] Session will close automatically in {argsTimer} minutes")
+        t = int(argsTimer)
         time.sleep(t*60)
         x = 0
     
@@ -230,21 +237,53 @@ def timer(driver):
     else:
         return 1
 
+def arguments():
+    # Parsing Args
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--bg" , help="Without Browser" , action = "store_true")
+    parser.add_argument("--list" , help="List Course with number", action = "store_true")
+    parser.add_argument("--timer" , help="Stop Time")
+    parser.add_argument("--course" , help="Course Number")
+    parser.add_argument("--user" , help="BlackBoard Username")
+    parser.add_argument("--passw" , help="BlackBoard Password")
+    
+    args = parser.parse_args()
+    global argsTimer
+    global argsBg
+    global argsCourse
+    global argsList
+    global argsUser
+    global argsPass
+    argsTimer = args.timer
+    argsBg = args.bg
+    argsCourse = args.course
+    argsList = args.list
+    argsUser = args.user
+    argsPass = args.passw
+
+    if argsList:
+        if path.exists("Files/CourseList.md"):
+            f = open("Files/CourseList.md")
+            print(f.read())
+            f.close()
+            sys.exit(0)
+        else:
+            print("[!] List not availabe right now, run the program manually first\n")
+            sys.exit(0)
+
 def main():
     banner()
+    arguments()
     print("[*] Starting up")
     username , password = getCreds()
     user_agent = '--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.1750.517 Safari/537.36"'
     opt = Options()
     opt.add_argument(user_agent)
-
-    if len(argv) > 1 and "bg" in argv[1]:
+    if argsBg:
         opt.add_argument("--headless")
-
     opt.add_argument("--disable-infobars")
     opt.add_argument("start-maximized")
     opt.add_argument("--disable-extensions")
-    # Pass the argument 1 to allow and 2 to block
     opt.add_experimental_option("prefs", { \
     "profile.default_content_setting_values.media_stream_mic": 1, 
     "profile.default_content_setting_values.media_stream_camera": 1,
