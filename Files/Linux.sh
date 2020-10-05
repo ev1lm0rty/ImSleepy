@@ -4,8 +4,8 @@
 read -p 'Enter Username: ' uservar
 read -p 'Password: ' passvar
 
-echo $uservar > Files/Creds.txt
-echo $passvar >> Files/Creds.txt
+echo $uservar > Creds.txt
+echo $passvar >> Creds.txt
 
 # For setting up
 sudo apt update
