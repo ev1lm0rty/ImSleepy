@@ -31,9 +31,9 @@ def cron(day , hour , duration , course):
     days = ["monday" , "tuesday" , "wednesday" , "thursday" , "friday" , "saturday"]
     d = days.index(day)
     d = d+1
-    user = os.getlogin()
-    command = f" {user} cd ~/ImSleepy python3 ImSleepy.py bg {course} {duration}"
-    cron = f"0  {hour} * * {d} "
+    # user = os.getlogin()
+    command = "cd ~/ImSleepy python3 ImSleepy.py {course} {duration}".format(course=course, duration=duration)
+    cron = "0  {hour} * * {d}".format(hour=hour, d=d)
     final = cron + command
     return final
     
