@@ -1,5 +1,13 @@
 # ImSleepy
 
+---
+**NOTE**
+
+This project is no longer maintained regularly.
+Contributers and Creators are super busy :(
+
+---
+
 ## Images
 ![ImSleepy](https://github.com/mrjoker05/ImSleepy/blob/master/Files/Image-01.png?raw=true)
 
